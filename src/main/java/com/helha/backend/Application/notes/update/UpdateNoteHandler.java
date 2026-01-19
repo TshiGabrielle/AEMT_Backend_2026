@@ -3,10 +3,12 @@ package com.helha.backend.Application.notes.update;
 import com.helha.backend.Infrastructure.note.INoteRepository;
 import com.helha.backend.Infrastructure.note.NoteRepository;
 import org.aspectj.weaver.ast.Not;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 // modifier une note existante
+@Service
 public class UpdateNoteHandler {
     private final INoteRepository noteRepository;
 
