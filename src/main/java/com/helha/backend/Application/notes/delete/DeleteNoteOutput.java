@@ -1,4 +1,5 @@
 package com.helha.backend.Application.notes.delete;
 
-public class DeleteNoteOutput {
-}
+public record DeleteNoteOutput(
+        boolean success
+) {}

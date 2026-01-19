@@ -1,4 +1,5 @@
 package com.helha.backend.Application.notes.delete;
 
-public class DeleteNoteInput {
-}
+public record DeleteNoteInput (
+        long id
+){}
