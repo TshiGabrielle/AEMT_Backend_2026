@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface INoteRepository extends CrudRepository<Note, Long>{
+public interface INoteRepository extends CrudRepository<NoteRepository, Long>{
     //Récupère toutes les notes
-    List<Note> findAll();
-
-
+    List<NoteRepository> findAll();
 }
