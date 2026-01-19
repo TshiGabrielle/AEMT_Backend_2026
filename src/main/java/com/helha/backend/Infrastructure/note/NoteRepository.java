@@ -17,7 +17,7 @@ public class NoteRepository {
     private String content_markdown;
     private String content_html;
 
-    private int idFolder;
+    private long idFolder;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
@@ -61,7 +61,7 @@ public class NoteRepository {
         return content_html;
     }
 
-    public int getIdFolder() {
+    public long getIdFolder() {
         return idFolder;
     }
 
@@ -106,7 +106,7 @@ public class NoteRepository {
         this.content_html = content_html;
     }
 
-    public void setIdFolder(int idFolder) {
+    public void setIdFolder(long idFolder) {
         this.idFolder = idFolder;
     }
 
