@@ -1,5 +1,7 @@
 package com.helha.backend.Domain;
 
+//Classe représentant une note
+
 import java.time.LocalDateTime;
 
 public class Note {
