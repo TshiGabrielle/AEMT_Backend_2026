@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/notes")
+@CrossOrigin(origins = "http://localhost:5173")
 public class NotesController {
 
     private final CreateNoteHandler createNoteHandler;
