@@ -1,4 +1,8 @@
 package com.helha.backend.Application.auth.login;
 
-public class LoginOutput {
-}
+// résultat du login
+public record LoginOutput(
+        boolean success,
+        String message,
+        Long userId
+) {}

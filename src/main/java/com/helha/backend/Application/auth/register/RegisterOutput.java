@@ -1,4 +1,8 @@
 package com.helha.backend.Application.auth.register;
-
-public class RegisterOutput {
-}
+/**
+ * Réponse renvoyée après une tentative d'inscription.
+ */
+public record RegisterOutput(
+        boolean success,
+        String message
+) {}

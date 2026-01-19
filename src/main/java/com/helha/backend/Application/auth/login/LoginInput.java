@@ -1,4 +1,7 @@
 package com.helha.backend.Application.auth.login;
 
-public class LoginInput {
-}
+// données envoyées par le client pour se connecter
+public record LoginInput(
+        String pseudo,
+        String password
+) {}

@@ -1,4 +1,7 @@
 package com.helha.backend.Application.auth.register;
 
-public class RegisterInput {
-}
+// données nécessaires pour créer un compte
+public record RegisterInput(
+        String pseudo,
+        String password
+) {}
