@@ -1,7 +1,7 @@
 package com.helha.backend.Controllers;
 
+import com.helha.backend.Application.folder.*;
 import com.helha.backend.Infrastructure.folder.DbFolder;
-import com.helha.backend.Infrastructure.folder.IFolderRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +14,27 @@ import java.util.List;
 @RequestMapping("/api/folders")
 public class FoldersController {
 
-    private final IFolderRepository folderRepository;
+    private final ListFolders listFolders;
+    private final GetFolder getFolder;
+    private final CreateFolder createFolder;
+    private final UpdateFolder updateFolder;
+    private final DeleteFolder deleteFolder;
+    private final GetFolderChildren getFolderChildren;
 
-    public FoldersController(IFolderRepository folderRepository) {
-        this.folderRepository = folderRepository;
+    public FoldersController(
+            ListFolders listFolders,
+            GetFolder getFolder,
+            CreateFolder createFolder,
+            UpdateFolder updateFolder,
+            DeleteFolder deleteFolder,
+            GetFolderChildren getFolderChildren
+    ) {
+        this.listFolders = listFolders;
+        this.getFolder = getFolder;
+        this.createFolder = createFolder;
+        this.updateFolder = updateFolder;
+        this.deleteFolder = deleteFolder;
+        this.getFolderChildren = getFolderChildren;
     }
 
     /**
@@ -29,13 +46,7 @@ public class FoldersController {
     public ResponseEntity<List<DbFolder>> listFolders(
             @RequestParam(required = false) Long userId
     ) {
-        if (userId != null) {
-            return ResponseEntity.ok(folderRepository.findByUserId(userId));
-
-
-        }
-
-        return ResponseEntity.ok((List<DbFolder>) folderRepository.findAll());
+        return ResponseEntity.ok(listFolders.execute(userId));
     }
 
     /**
@@ -44,7 +55,7 @@ public class FoldersController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<DbFolder> getFolder(@PathVariable Long id) {
-        return folderRepository.findById(id)
+        return getFolder.execute(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -55,7 +66,7 @@ public class FoldersController {
      */
     @PostMapping
     public ResponseEntity<DbFolder> createFolder(@RequestBody DbFolder folder) {
-        DbFolder savedFolder = folderRepository.save(folder);
+        DbFolder savedFolder = createFolder.execute(folder);
         return ResponseEntity.status(201).body(savedFolder);
     }
 
@@ -68,12 +79,8 @@ public class FoldersController {
             @PathVariable Long id,
             @RequestBody DbFolder folderUpdate
     ) {
-        return folderRepository.findById(id)
-                .map(folder -> {
-                    folder.setName(folderUpdate.getName());
-                    DbFolder updated = folderRepository.save(folder);
-                    return ResponseEntity.ok(updated);
-                })
+        return updateFolder.execute(id, folderUpdate)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -83,12 +90,10 @@ public class FoldersController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFolder(@PathVariable Long id) {
-        if (!folderRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+        if (deleteFolder.execute(id)) {
+            return ResponseEntity.noContent().build();
         }
-
-        folderRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -97,7 +102,7 @@ public class FoldersController {
      */
     @GetMapping("/{id}/children")
     public ResponseEntity<List<DbFolder>> getChildren(@PathVariable Long id) {
-        return ResponseEntity.ok(folderRepository.findByParentId(id));
+        return ResponseEntity.ok(getFolderChildren.execute(id));
     }
 }
 
