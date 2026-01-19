@@ -1,4 +1,7 @@
 package com.helha.backend.Application.folders.create;
 
-public class CreateFolderOutput {
-}
+// résultat de la création d'un dossier
+public record CreateFolderOutput(
+        boolean success,
+        String message
+){}
