@@ -1,0 +1,15 @@
+package com.helha.backend.Infrastructure.note;
+
+import com.helha.backend.Domain.Note;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface INoteRepository extends CrudRepository<Note, Long>{
+    //Récupère toutes les notes
+    List<Note> findAll();
+
+
+}
