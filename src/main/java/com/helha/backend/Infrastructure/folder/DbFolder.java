@@ -30,7 +30,7 @@ public class DbFolder {
 
     // inverse de OneToMany
     // un dossier peut avoir plusieurs sous-dossiers
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<DbFolder> children;
 
     // getters / setters
