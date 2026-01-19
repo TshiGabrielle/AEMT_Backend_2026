@@ -6,6 +6,9 @@ import com.helha.backend.Application.folders.create.CreateFolderOutput;
 import com.helha.backend.Application.folders.delete.DeleteFolderHandler;
 import com.helha.backend.Application.folders.delete.DeleteFolderInput;
 import com.helha.backend.Application.folders.delete.DeleteFolderOutput;
+import com.helha.backend.Application.folders.get.GetFolderNotesHandler;
+import com.helha.backend.Application.folders.get.GetFolderNotesInput;
+import com.helha.backend.Application.folders.get.GetFolderNotesOutput;
 import com.helha.backend.Application.folders.getAll.GetFoldersTreeHandler;
 import com.helha.backend.Application.folders.getAll.GetFoldersTreeInput;
 import com.helha.backend.Application.folders.getAll.GetFoldersTreeOutput;
@@ -22,16 +25,19 @@ public class FoldersController {
     private final GetFoldersTreeHandler getFoldersTreeHandler;
     private final RenameFolderHandler renameFolderHandler;
     private final DeleteFolderHandler deleteFolderHandler;
+    private final GetFolderNotesHandler getFolderNotesHandler;
 
     public FoldersController(
             CreateFolderHandler createFolderHandler,
             GetFoldersTreeHandler getFoldersTreeHandler,
             RenameFolderHandler renameFolderHandler,
-            DeleteFolderHandler deleteFolderHandler) {
+            DeleteFolderHandler deleteFolderHandler,
+            GetFolderNotesHandler getFolderNotesHandler) {
         this.createFolderHandler = createFolderHandler;
         this.getFoldersTreeHandler = getFoldersTreeHandler;
         this.renameFolderHandler = renameFolderHandler;
         this.deleteFolderHandler = deleteFolderHandler;
+        this.getFolderNotesHandler = getFolderNotesHandler;
     }
 
     // POST /api/folders
@@ -69,5 +75,13 @@ public class FoldersController {
     public DeleteFolderOutput delete(@PathVariable long id) {
         DeleteFolderInput input = new DeleteFolderInput(id);
         return deleteFolderHandler.handle(input);
+    }
+
+    // GET /api/folders/{id}/notes
+    // récupère toutes les notes d'un dossier
+    @GetMapping("/{id}/notes")
+    public GetFolderNotesOutput getNotes(@PathVariable long id) {
+        GetFolderNotesInput input = new GetFolderNotesInput(id);
+        return getFolderNotesHandler.handle(input);
     }
 }

@@ -10,4 +10,7 @@ import java.util.List;
 public interface INoteRepository extends CrudRepository<NoteRepository, Long>{
     //Récupère toutes les notes
     List<NoteRepository> findAll();
+
+    // récupère toutes les notes d'un dossier donné
+    List<NoteRepository> findByIdFolder(long idFolder);
 }
