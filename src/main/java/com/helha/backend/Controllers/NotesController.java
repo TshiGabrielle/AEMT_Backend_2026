@@ -12,6 +12,10 @@ import com.helha.backend.Application.notes.get.GetNoteOutput;
 import com.helha.backend.Application.notes.update.UpdateNoteHandler;
 import com.helha.backend.Application.notes.update.UpdateNoteInput;
 import com.helha.backend.Application.notes.update.UpdateNoteOutput;
+import com.helha.backend.Application.notes.list.ListNotesHandler;
+import com.helha.backend.Application.notes.list.ListNotesOutput;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,18 +26,21 @@ public class NotesController {
     private final DeleteNoteHandler deleteNoteHandler;
     private final GetNoteHandler getNoteHandler;
     private final UpdateNoteHandler updateNoteHandler;
+    private final ListNotesHandler listNotesHandler;
 
 
     public NotesController(
             CreateNoteHandler createNoteHandler,
             DeleteNoteHandler deleteNoteHandler,
             GetNoteHandler getNoteHandler,
-            UpdateNoteHandler updateNoteHandler
+            UpdateNoteHandler updateNoteHandler,
+            ListNotesHandler listNotesHandler
     ) {
         this.createNoteHandler = createNoteHandler;
         this.deleteNoteHandler = deleteNoteHandler;
         this.getNoteHandler = getNoteHandler;
         this.updateNoteHandler = updateNoteHandler;
+        this.listNotesHandler = listNotesHandler;
 
     }
 
@@ -48,6 +55,13 @@ public class NotesController {
     public GetNoteOutput get(@PathVariable long id) {
         return getNoteHandler.handle(new GetNoteInput(id));
     }
+
+    // ---------------- LIST NOTES ----------------
+    @GetMapping
+    public List<ListNotesOutput> listNotes() {
+        return listNotesHandler.handle();
+    }
+
 
 
     // ---------------- DELETE NOTE ----------------
