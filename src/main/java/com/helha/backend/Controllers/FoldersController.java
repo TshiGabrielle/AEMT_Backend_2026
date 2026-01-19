@@ -3,19 +3,24 @@ package com.helha.backend.Controllers;
 import com.helha.backend.Application.folders.create.CreateFolderHandler;
 import com.helha.backend.Application.folders.create.CreateFolderInput;
 import com.helha.backend.Application.folders.create.CreateFolderOutput;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.helha.backend.Application.folders.getAll.GetFoldersTreeHandler;
+import com.helha.backend.Application.folders.getAll.GetFoldersTreeInput;
+import com.helha.backend.Application.folders.getAll.GetFoldersTreeOutput;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/folders")
 public class FoldersController {
-    // handler contenant la logique métier
+    // handlers contenant la logique métier
     private final CreateFolderHandler createFolderHandler;
+    private final GetFoldersTreeHandler getFoldersTreeHandler;
 
-    public FoldersController(CreateFolderHandler createFolderHandler) {
+    public FoldersController(
+            CreateFolderHandler createFolderHandler,
+            GetFoldersTreeHandler getFoldersTreeHandler
+    ) {
         this.createFolderHandler = createFolderHandler;
+        this.getFoldersTreeHandler = getFoldersTreeHandler;
     }
 
     // POST /api/folders
@@ -23,5 +28,15 @@ public class FoldersController {
     @PostMapping
     public CreateFolderOutput createFolder(@RequestBody CreateFolderInput input) {
         return createFolderHandler.handle(input);
+    }
+
+    // GET /api/folders
+    // récupère tous les dossiers
+    @GetMapping
+    public GetFoldersTreeOutput getAll() {
+        GetFoldersTreeInput input = new GetFoldersTreeInput();
+
+        // on délègue la logique au handler
+        return getFoldersTreeHandler.handle(input);
     }
 }
