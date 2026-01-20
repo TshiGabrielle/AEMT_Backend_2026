@@ -49,10 +49,10 @@ public class FoldersController {
     }
 
     // GET /api/folders
-    // récupère tous les dossiers
+    // récupère tous les dossiers de l'utilisateur
     @GetMapping
-    public GetFoldersTreeOutput getAll() {
-        GetFoldersTreeInput input = new GetFoldersTreeInput();
+    public GetFoldersTreeOutput getAll(@RequestParam long userId) {
+        GetFoldersTreeInput input = new GetFoldersTreeInput(userId);
 
         // on délègue la logique au handler
         return getFoldersTreeHandler.handle(input);
@@ -63,26 +63,33 @@ public class FoldersController {
     @PutMapping("/{id}")
     public RenameFolderOutput rename(
             @PathVariable long id,
+            @RequestParam long userId,
             @RequestBody RenameFolderInput body
     ) {
         // on reconstruit un input
-        RenameFolderInput input = new RenameFolderInput(id, body.name());
+        RenameFolderInput input = new RenameFolderInput(id, userId, body.name());
         return renameFolderHandler.handle(input);
     }
 
     // DELETE /api/folders/{id}
     // supprime un dossier (+ sous-dossiers et notes)
     @DeleteMapping("/{id}")
-    public DeleteFolderOutput delete(@PathVariable long id) {
-        DeleteFolderInput input = new DeleteFolderInput(id);
+    public DeleteFolderOutput delete(
+            @PathVariable long id,
+            @RequestParam long userId
+    ) {
+        DeleteFolderInput input = new DeleteFolderInput(id, userId);
         return deleteFolderHandler.handle(input);
     }
 
     // GET /api/folders/{id}/notes
-    // récupère toutes les notes d'un dossier
+    // récupère toutes les notes d'un dossier pour un utilisateur
     @GetMapping("/{id}/notes")
-    public GetFolderNotesOutput getNotes(@PathVariable long id) {
-        GetFolderNotesInput input = new GetFolderNotesInput(id);
+    public GetFolderNotesOutput getNotes(
+            @PathVariable long id,
+            @RequestParam long userId
+    ) {
+        GetFolderNotesInput input = new GetFolderNotesInput(id, userId);
         return getFolderNotesHandler.handle(input);
     }
 }
