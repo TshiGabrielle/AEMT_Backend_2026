@@ -20,7 +20,11 @@ public class RegisterHandler {
 
         // Vérifier si le pseudo existe déjà
         if (userRepository.existsByPseudo(input.pseudo())) {
-            return new RegisterOutput(false, "Ce pseudo est déjà utilisé.");
+            return new RegisterOutput(
+                    false,
+                    "Ce pseudo est déjà utilisé.",
+                    null
+            );
         }
 
         // Créer l'utilisateur (sans hashage pour l'instant)
@@ -32,6 +36,10 @@ public class RegisterHandler {
         // Sauvegarde en base
         userRepository.save(user);
 
-        return new RegisterOutput(true, "Compte créé avec succès.");
+        return new RegisterOutput(
+                true,
+                "Compte créé avec succès.",
+                user.getId()
+        );
     }
 }

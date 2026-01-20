@@ -4,5 +4,6 @@ package com.helha.backend.Application.auth.register;
  */
 public record RegisterOutput(
         boolean success,
-        String message
+        String message,
+        Long userId
 ) {}
