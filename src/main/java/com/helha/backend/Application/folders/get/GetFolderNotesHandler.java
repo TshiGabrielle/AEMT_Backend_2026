@@ -16,19 +16,19 @@ public class GetFolderNotesHandler {
 
     public GetFolderNotesOutput handle(GetFolderNotesInput input) {
 
+        // récupérer uniquement les notes du dossier POUR cet utilisateur
         Iterable<NoteRepository> entities =
-                noteRepository.findByFolder_Id(input.folderId());
+                noteRepository.findByUserIdAndFolderId(
+                        input.userId(),
+                        input.folderId()
+                );
 
         GetFolderNotesOutput output = new GetFolderNotesOutput();
 
         for (NoteRepository entity : entities) {
-            // mapping simple : entity -> DTO
-            GetFolderNotesOutput.Note dto =
-                    new GetFolderNotesOutput.Note();
-
+            GetFolderNotesOutput.Note dto = new GetFolderNotesOutput.Note();
             dto.id = entity.getId();
             dto.name = entity.getName();
-
             output.notes.add(dto);
         }
 

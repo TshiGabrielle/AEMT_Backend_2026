@@ -14,15 +14,17 @@ public class DeleteFolderHandler {
     }
 
     public DeleteFolderOutput handle(DeleteFolderInput input) {
-        // vérifier que le dossier existe
-        DbFolder folder = folderRepository.findById(input.id()).orElse(null);
+
+        // récupérer le dossier uniquement s'il appartient à l'utilisateur
+        DbFolder folder = folderRepository
+                .findByIdAndUserId(input.id(), input.userId())
+                .orElse(null);
 
         if (folder == null) {
             return new DeleteFolderOutput(false, "Dossier introuvable.");
         }
 
-        // suppression en db
-        // grâce aux cascades, les sous-dossiers et les notes sont également supprimés
+        // suppression en db (cascade sur sous-dossiers et notes)
         folderRepository.delete(folder);
 
         return new DeleteFolderOutput(true, "Dossier supprimé avec succès.");

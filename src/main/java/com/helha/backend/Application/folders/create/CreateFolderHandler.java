@@ -21,7 +21,11 @@ public class CreateFolderHandler {
 
         // gérer le parent si présent
         if (input.parentId() != null) {
-            DbFolder parent = folderRepository.findById(input.parentId()).orElse(null);
+
+            // on récupère le parent uniquement s'il appartient à l'utilisateur
+            DbFolder parent = folderRepository
+                    .findByIdAndUserId(input.parentId(), input.userId())
+                    .orElse(null);
 
             if (parent == null) {
                 return new CreateFolderOutput(false, "Dossier parent introuvable.");

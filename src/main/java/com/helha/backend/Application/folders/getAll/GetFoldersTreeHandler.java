@@ -25,11 +25,13 @@ public class GetFoldersTreeHandler {
 
         GetFoldersTreeOutput output = new GetFoldersTreeOutput();
 
-        // 1. Charger tous les dossiers
-        List<DbFolder> folders = folderRepository.findAll();
+        // 1. Charger uniquement les dossiers de l'utilisateur
+        List<DbFolder> folders =
+                folderRepository.findByUserId(input.userId());
 
-        // 2. Charger toutes les notes
-        List<NoteRepository> notes = noteRepository.findAll();
+        // 2. Charger uniquement les notes de l'utilisateur
+        List<NoteRepository> notes =
+                noteRepository.findByUserId(input.userId());
 
         // 3. Créer une map id → DTO
         Map<Long, GetFoldersTreeOutput.Folder> map = new HashMap<>();
@@ -49,10 +51,14 @@ public class GetFoldersTreeHandler {
             noteDto.title = n.getName();
 
             if (n.getFolder() == null) {
-                // note à la racine
                 output.rootNotes.add(noteDto);
             } else {
-                map.get(n.getFolder().getId()).notes.add(noteDto);
+                GetFoldersTreeOutput.Folder folderDto =
+                        map.get(n.getFolder().getId());
+
+                if (folderDto != null) {
+                    folderDto.notes.add(noteDto);
+                }
             }
         }
 
@@ -61,7 +67,10 @@ public class GetFoldersTreeHandler {
             if (folder.parentId == null) {
                 output.folders.add(folder);
             } else {
-                map.get(folder.parentId).children.add(folder);
+                GetFoldersTreeOutput.Folder parent = map.get(folder.parentId);
+                if (parent != null) {
+                    parent.children.add(folder);
+                }
             }
         }
 

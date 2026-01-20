@@ -14,18 +14,17 @@ public class RenameFolderHandler {
     }
 
     public RenameFolderOutput handle(RenameFolderInput input) {
-        // récupérer le dossier à partir de son id
-        DbFolder folder = folderRepository.findById(input.id()).orElse(null);
 
-        // s'il  n'existe pas, on renvoie une erreur
+        // récupérer le dossier uniquement s'il appartient à l'utilisateur
+        DbFolder folder = folderRepository
+                .findByIdAndUserId(input.id(), input.userId())
+                .orElse(null);
+
         if (folder == null) {
             return new RenameFolderOutput(false, "Dossier introuvable");
         }
 
-        // on met à jour le nom
         folder.setName(input.name());
-
-        // on sauvegarde en db
         folderRepository.save(folder);
 
         return new RenameFolderOutput(true, "Dossier renommé avec succès.");
