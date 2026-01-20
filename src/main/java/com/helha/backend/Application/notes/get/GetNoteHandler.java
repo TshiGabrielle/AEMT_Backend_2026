@@ -16,9 +16,9 @@ public class GetNoteHandler {
 
 
     public GetNoteOutput handle(GetNoteInput input) {
-
+        // on récupère la note uniquement si elle appartient à l'utilisateur
         Optional<NoteRepository> optionalNote =
-                noteRepository.findById(input.id());
+                noteRepository.findByIdAndUserId(input.id(), input.userId());
 
         if (optionalNote.isEmpty()) {
             return null;

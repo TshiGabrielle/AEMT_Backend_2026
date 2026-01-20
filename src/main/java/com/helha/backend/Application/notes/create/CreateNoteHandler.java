@@ -21,10 +21,12 @@ public class CreateNoteHandler {
 
     public CreateNoteOutput handle(CreateNoteInput input) {
 
-        // Charger le dossier (ou null si racine)
+        // charger le dossier uniquement s'il appartient à l'utilisateur
         DbFolder folder = null;
         if (input.idFolder() != null) {
-            folder = folderRepository.findById(input.idFolder()).orElse(null);
+            folder = folderRepository
+                    .findByIdAndUserId(input.idFolder(), input.userId())
+                    .orElse(null);
         }
 
         // Création de l'entité JPA
@@ -34,13 +36,15 @@ public class CreateNoteHandler {
         note.setContent_html(""); // rendu markdown -> html plus tard
         note.setFolder(folder);
 
+        // associer la note à son propriétaire
+        note.setUserId(input.userId());
+
         LocalDateTime now = LocalDateTime.now();
         note.setCreated_at(now);
         note.setUpdated_at(now);
 
         // Calcul des métadonnées
         String content = input.content_markdown();
-
         note.setNbcaract(content.length());
         note.setNblines(content.isEmpty() ? 0 : content.split("\n").length);
         note.setNbmots(content.isEmpty() ? 0 : content.split("\\s+").length);

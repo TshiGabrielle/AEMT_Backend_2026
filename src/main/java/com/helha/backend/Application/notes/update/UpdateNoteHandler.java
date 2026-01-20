@@ -17,19 +17,19 @@ public class UpdateNoteHandler {
     }
 
     public UpdateNoteOutput handle(UpdateNoteInput input) {
-        // récupérer la note à partir de son id + vérifier qu'elle existe
-        NoteRepository note = noteRepository.findById(input.id()).orElse(null);
+        // Récupérer la note uniquement si elle appartient à l'utilisateur
+        NoteRepository note =
+                noteRepository.findByIdAndUserId(input.id(), input.userId())
+                        .orElse(null);
 
         if (note == null) {
             return new UpdateNoteOutput(false, "Note non trouvée");
         }
 
-        // A FAIRE : vérifier les permissions de l'utilisateur ?
 
         // mettre à jour les champs principaux
         note.setName(input.name());
         note.setContent_markdown(input.contentMarkdown());
-
 
         // Mise à jour de la date de modification
         note.setUpdated_at(LocalDateTime.now());

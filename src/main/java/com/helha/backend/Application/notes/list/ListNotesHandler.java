@@ -16,11 +16,11 @@ public class ListNotesHandler {
     }
 
     /**
-     * Récupère toutes les notes (pour la liste)
+     * Récupère toutes les notes appartenant à un utilisateur.
      */
-    public List<ListNotesOutput> handle() {
+    public List<ListNotesOutput> handle(long userId) {
 
-        List<NoteRepository> notes = noteRepository.findAll();
+        List<NoteRepository> notes = noteRepository.findByUserId(userId);
 
         return notes.stream()
                 .map(note -> new ListNotesOutput(
