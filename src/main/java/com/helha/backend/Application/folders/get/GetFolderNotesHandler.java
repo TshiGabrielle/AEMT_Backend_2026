@@ -17,7 +17,7 @@ public class GetFolderNotesHandler {
     public GetFolderNotesOutput handle(GetFolderNotesInput input) {
 
         Iterable<NoteRepository> entities =
-                noteRepository.findByIdFolder(input.folderId());
+                noteRepository.findByFolder_Id(input.folderId());
 
         GetFolderNotesOutput output = new GetFolderNotesOutput();
 

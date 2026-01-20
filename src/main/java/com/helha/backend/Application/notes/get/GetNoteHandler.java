@@ -26,12 +26,14 @@ public class GetNoteHandler {
 
         NoteRepository note = optionalNote.get();
 
+        Long folderId = note.getFolder() != null ? note.getFolder().getId() : null;
+
         return new GetNoteOutput(
                 note.getId(),
                 note.getName(),
                 note.getContent_markdown(),
                 note.getContent_html(),
-                note.getIdFolder(),
+                folderId,
                 note.getCreated_at(),
                 note.getUpdated_at(),
                 note.getTaille_octet(),

@@ -13,4 +13,6 @@ public interface IFolderRepository extends CrudRepository<DbFolder, Long> {
 
     // récupère tous les sous-dossiers d'un dossier donné
     List<DbFolder> findByParentId(long parentId);
+
+    List<DbFolder> findAll();
 }
