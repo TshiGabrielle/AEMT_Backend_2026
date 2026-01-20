@@ -48,27 +48,37 @@ public class NotesController {
     // ---------------- CREATE NOTE ----------------
     @PostMapping
     public CreateNoteOutput create(@RequestBody CreateNoteInput input) {
+
         return createNoteHandler.handle(input);
     }
 
     // ---------------- GET NOTE BY ID ----------------
     @GetMapping("/{id}")
-    public GetNoteOutput get(@PathVariable long id) {
-        return getNoteHandler.handle(new GetNoteInput(id));
+    public GetNoteOutput get(
+            @PathVariable long id,
+            @RequestParam long userId)
+    {
+        // on transmet l'id de la note et l'id de l'utilisateur
+        return getNoteHandler.handle(new GetNoteInput(id, userId));
     }
 
     // ---------------- LIST NOTES ----------------
+    // retourne uniquement les notes de l'utilisateur
     @GetMapping
-    public List<ListNotesOutput> listNotes() {
-        return listNotesHandler.handle();
+    public List<ListNotesOutput> listNotes(@RequestParam long userId) {
+
+        return listNotesHandler.handle(userId);
     }
 
 
 
     // ---------------- DELETE NOTE ----------------
     @DeleteMapping("/{id}")
-    public DeleteNoteOutput delete(@PathVariable long id) {
-        return deleteNoteHandler.handle(new DeleteNoteInput(id));
+    public DeleteNoteOutput delete(
+            @PathVariable long id,
+            @RequestParam long userId
+    ) {
+        return deleteNoteHandler.handle(new DeleteNoteInput(id, userId));
     }
 
     // modifier une note
@@ -76,10 +86,12 @@ public class NotesController {
     @PutMapping("/{id}")
     public UpdateNoteOutput updateNote(
             @PathVariable long id,
+            @RequestParam long userId,
             @RequestBody UpdateNoteRequest body
     ) {
         UpdateNoteInput input = new UpdateNoteInput(
                 id,
+                userId,
                 body.name,
                 body.contentMarkdown
         );
@@ -87,7 +99,7 @@ public class NotesController {
         return updateNoteHandler.handle(input);
     }
 
-    // DTO uniquement pour lire le JSON du body
+    // DTO  pour lire le json du body
     public static class UpdateNoteRequest {
         public String name;
         public String contentMarkdown;

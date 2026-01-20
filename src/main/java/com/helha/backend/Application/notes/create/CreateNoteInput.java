@@ -1,9 +1,10 @@
 package com.helha.backend.Application.notes.create;
 
 public record CreateNoteInput (
-        String name,
-        String content_markdown,
-        Long idFolder //null = note à la racine
+        String name,                // titre de la note
+        String content_markdown,    // contenu en markdown
+        Long idFolder,               //null = note à la racine
+        long userId                 // id de l'utilisateur propriétaire
 ) {}
 
 
