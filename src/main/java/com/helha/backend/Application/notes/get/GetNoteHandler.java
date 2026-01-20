@@ -21,12 +21,16 @@ public class GetNoteHandler {
                 noteRepository.findById(input.id());
 
         if (optionalNote.isEmpty()) {
-            return null; // ou exception plus tard
+            return null;
         }
 
         NoteRepository note = optionalNote.get();
 
-        Long folderId = note.getFolder() != null ? note.getFolder().getId() : null;
+        Long folderId = null;
+        if (note.getFolder() != null) {
+            folderId = note.getFolder().getId();
+        }
+
 
         return new GetNoteOutput(
                 note.getId(),

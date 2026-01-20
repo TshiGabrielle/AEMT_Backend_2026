@@ -1,5 +1,7 @@
 package com.helha.backend.Application.notes.get;
 
+import com.helha.backend.Infrastructure.folder.DbFolder;
+
 import java.time.LocalDateTime;
 
 public record GetNoteOutput
@@ -7,7 +9,7 @@ public record GetNoteOutput
          String name,
          String content_markdown,
          String content_html,
-         long idFolder,
+         Long folderId,
          LocalDateTime created_at,
          LocalDateTime updated_at,
          int taille_octet,
