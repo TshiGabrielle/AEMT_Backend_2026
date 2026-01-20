@@ -6,13 +6,11 @@ import com.helha.backend.Application.auth.login.LoginOutput;
 import com.helha.backend.Application.auth.register.RegisterHandler;
 import com.helha.backend.Application.auth.register.RegisterInput;
 import com.helha.backend.Application.auth.register.RegisterOutput;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // contrôleur pour l'authentification
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/auth")
 public class AuthController {
 

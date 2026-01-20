@@ -18,6 +18,7 @@ import com.helha.backend.Application.folders.rename.RenameFolderOutput;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/folders")
 public class FoldersController {
     // handlers contenant la logique métier
