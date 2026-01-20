@@ -42,16 +42,22 @@ public class NoteRepository {
     @Column(name = "nbcaract")
     private int nbcaract;
 
+    // identifiant de l'utilisateur propriétaire de cette note
+    // permet de savoir à qui appartient la note en db
+    @Column(name="id_user", nullable=false)
+    private long userId;
+
     // Constructeur vide pour JPA
     public NoteRepository() {
     }
 
     // Constructeur
-    public NoteRepository(String name, String content_markdown, String content_html, DbFolder folder) {
+    public NoteRepository(String name, String content_markdown, String content_html, DbFolder folder, long userId) {
         this.name = name;
         this.content_markdown = content_markdown;
         this.content_html = content_html != null ? content_html : "";
         this.folder = folder;
+        this.userId = userId;
         this.created_at = LocalDateTime.now();
         this.updated_at = LocalDateTime.now();
         this.taille_octet = 0;
@@ -105,6 +111,7 @@ public class NoteRepository {
         return nbcaract;
     }
 
+    public long getUserId() { return userId; }
     // ---------------- Setters ----------------
     public void setId(long id) {
         this.id = id;
@@ -148,5 +155,9 @@ public class NoteRepository {
 
     public void setNbcaract(int nbcaract) {
         this.nbcaract = nbcaract;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }
