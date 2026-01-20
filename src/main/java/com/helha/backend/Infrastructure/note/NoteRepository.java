@@ -20,7 +20,7 @@ public class NoteRepository {
     @Column(name = "content_html", columnDefinition = "TEXT")
     private String content_html;
 
-    @ManyToOne
+    @ManyToOne(optional=true)
     @JoinColumn(name = "folder_id")
     private DbFolder folder;
     
