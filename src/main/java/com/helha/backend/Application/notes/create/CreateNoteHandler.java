@@ -1,5 +1,7 @@
 package com.helha.backend.Application.notes.create;
 
+import com.helha.backend.Infrastructure.folder.IFolderRepository;
+import com.helha.backend.Infrastructure.folder.DbFolder;
 import com.helha.backend.Infrastructure.note.INoteRepository;
 import com.helha.backend.Infrastructure.note.NoteRepository;
 import org.springframework.stereotype.Service;
@@ -10,21 +12,27 @@ import java.time.LocalDateTime;
 public class CreateNoteHandler {
 
     private final INoteRepository noteRepository;
+    private final IFolderRepository folderRepository;
 
-    public CreateNoteHandler(INoteRepository noteRepository) {
+    public CreateNoteHandler(INoteRepository noteRepository, IFolderRepository folderRepository) {
         this.noteRepository = noteRepository;
+        this.folderRepository = folderRepository;
     }
 
     public CreateNoteOutput handle(CreateNoteInput input) {
+
+        // Charger le dossier (ou null si racine)
+        DbFolder folder = null;
+        if (input.idFolder() != null) {
+            folder = folderRepository.findById(input.idFolder()).orElse(null);
+        }
 
         // Création de l'entité JPA
         NoteRepository note = new NoteRepository();
         note.setName(input.name());
         note.setContent_markdown(input.content_markdown());
         note.setContent_html(""); // rendu markdown -> html plus tard
-
-        // 0 = racine
-        note.setIdFolder(input.idFolder());
+        note.setFolder(folder);
 
         LocalDateTime now = LocalDateTime.now();
         note.setCreated_at(now);

@@ -1,8 +1,7 @@
 package com.helha.backend.Infrastructure.note;
 
+import com.helha.backend.Infrastructure.folder.DbFolder;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,28 +13,45 @@ public class NoteRepository {
     private long id;
 
     private String name;
+    
+    @Column(name = "content_markdown", columnDefinition = "TEXT")
     private String content_markdown;
+    
+    @Column(name = "content_html", columnDefinition = "TEXT")
     private String content_html;
 
-    private long idFolder;
+    @ManyToOne
+    @JoinColumn(name = "folder_id")
+    private DbFolder folder;
+    
+    @Column(name = "created_at")
     private LocalDateTime created_at;
+    
+    @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
+    @Column(name = "taille_octet")
     private int taille_octet;
+    
+    @Column(name = "nblines")
     private int nblines;
+    
+    @Column(name = "nbmots")
     private int nbmots;
+    
+    @Column(name = "nbcaract")
     private int nbcaract;
 
-    //Constructeur vide pour JPA
+    // Constructeur vide pour JPA
     public NoteRepository() {
     }
 
-    //Constructeur
-    public NoteRepository(String name, String content_markdown, String content_html, int idFolder) {
+    // Constructeur
+    public NoteRepository(String name, String content_markdown, String content_html, DbFolder folder) {
         this.name = name;
         this.content_markdown = content_markdown;
-        this.content_html = "";
-        this.idFolder = 0;
+        this.content_html = content_html != null ? content_html : "";
+        this.folder = folder;
         this.created_at = LocalDateTime.now();
         this.updated_at = LocalDateTime.now();
         this.taille_octet = 0;
@@ -61,8 +77,8 @@ public class NoteRepository {
         return content_html;
     }
 
-    public long getIdFolder() {
-        return idFolder;
+    public DbFolder getFolder() {
+        return folder;
     }
 
     public LocalDateTime getCreated_at() {
@@ -106,8 +122,8 @@ public class NoteRepository {
         this.content_html = content_html;
     }
 
-    public void setIdFolder(long idFolder) {
-        this.idFolder = idFolder;
+    public void setFolder(DbFolder folder) {
+        this.folder = folder;
     }
 
     public void setCreated_at(LocalDateTime created_at) {
@@ -133,6 +149,4 @@ public class NoteRepository {
     public void setNbcaract(int nbcaract) {
         this.nbcaract = nbcaract;
     }
-
-
 }
