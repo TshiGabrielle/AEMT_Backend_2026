@@ -23,7 +23,7 @@ public class UpdateNoteHandler {
                         .orElse(null);
 
         if (note == null) {
-            return new UpdateNoteOutput(false, "Note non trouvée");
+            return new UpdateNoteOutput(false, "Note non trouvée", null);
         }
 
 
@@ -51,6 +51,10 @@ public class UpdateNoteHandler {
         noteRepository.save(note);
 
         // retourner le résultat
-        return new UpdateNoteOutput(true, "Note modifiée avec succès.");
+        return new UpdateNoteOutput(
+                true,
+                "Note modifiée avec succès.",
+                note.getUpdated_at()
+        );
     }
 }
