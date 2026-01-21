@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+
 @Service
 public class CreateNoteHandler {
 
@@ -21,7 +22,10 @@ public class CreateNoteHandler {
 
     public CreateNoteOutput handle(CreateNoteInput input) {
 
-        // charger le dossier uniquement s'il appartient à l'utilisateur
+        // On essaie de charger le dossier auquel appartient la note,
+        // mais seulement si ce dossier appartient bien à l'utilisateur.
+        // Si l'id du dossier n'est pas donné, ou si le dossier ne lui appartient pas,
+        // alors 'folder' restera null.
         DbFolder folder = null;
         if (input.idFolder() != null) {
             folder = folderRepository
@@ -29,31 +33,33 @@ public class CreateNoteHandler {
                     .orElse(null);
         }
 
-        // Création de l'entité JPA
+        // On crée une nouvelle entité Note (objet qui sera enregistré en base)
         NoteRepository note = new NoteRepository();
-        note.setName(input.name());
-        note.setContent_markdown(input.content_markdown());
-        note.setContent_html(""); // rendu markdown -> html plus tard
-        note.setFolder(folder);
+        note.setName(input.name());                    // titre de la note
+        note.setContent_markdown(input.content_markdown());  // contenu brut en markdown
+        note.setContent_html("");                      // le HTML sera généré plus tard
+        note.setFolder(folder);                        // on associe la note au dossier (ou null)
 
-        // associer la note à son propriétaire
+        // On associe aussi la note à l'utilisateur qui la crée
         note.setUserId(input.userId());
 
+        // On enregistre la date actuelle pour la création et la dernière mise à jour
         LocalDateTime now = LocalDateTime.now();
         note.setCreated_at(now);
         note.setUpdated_at(now);
 
-        // Calcul des métadonnées
+        // On calcule les métadonnées demandées :
+
         String content = input.content_markdown();
         note.setNbcaract(content.length());
         note.setNblines(content.isEmpty() ? 0 : content.split("\n").length);
         note.setNbmots(content.isEmpty() ? 0 : content.split("\\s+").length);
         note.setTaille_octet(content.getBytes().length);
 
-        // Sauvegarde
+        // On sauvegarde la note en base de données
         NoteRepository savedNote = noteRepository.save(note);
 
-        // Retour Output
+        // On renvoie uniquement les infos nécessaires à la réponse
         return new CreateNoteOutput(
                 savedNote.getId(),
                 savedNote.getName(),

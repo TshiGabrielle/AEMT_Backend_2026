@@ -1,8 +1,7 @@
 package com.helha.backend.Application.notes.delete;
 
-import com.helha.backend.Application.notes.create.CreateNoteHandler;
+
 import com.helha.backend.Infrastructure.note.INoteRepository;
-import com.helha.backend.Infrastructure.note.NoteRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,10 +18,12 @@ public class DeleteNoteHandler {
         // Vérifie que la note existe ET appartient à l'utilisateur
         var note = noteRepository.findByIdAndUserId(input.id(), input.userId());
 
+        //Si la note est vide, on retourne un false
         if (note.isEmpty()) {
             return new DeleteNoteOutput(false);
         }
 
+        //Note supprimée, on retourne un true
         noteRepository.delete(note.get());
         return new DeleteNoteOutput(true);
     }
