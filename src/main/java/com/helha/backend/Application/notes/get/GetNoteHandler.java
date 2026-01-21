@@ -20,18 +20,20 @@ public class GetNoteHandler {
         Optional<NoteRepository> optionalNote =
                 noteRepository.findByIdAndUserId(input.id(), input.userId());
 
+        //retourne null si note est vide
         if (optionalNote.isEmpty()) {
             return null;
         }
-
+        // On a trouvé la note, on la récupère.
         NoteRepository note = optionalNote.get();
 
+        // On extrait l'id du dossier si la note est rattachée à un dossier ; sinon, on laisse null
         Long folderId = null;
         if (note.getFolder() != null) {
             folderId = note.getFolder().getId();
         }
 
-
+        //On retourne objet de sortie avec les infos nécessaires pour le frontend
         return new GetNoteOutput(
                 note.getId(),
                 note.getName(),

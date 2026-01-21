@@ -112,6 +112,7 @@ public class NoteRepository {
     }
 
     public long getUserId() { return userId; }
+
     // ---------------- Setters ----------------
     public void setId(long id) {
         this.id = id;
