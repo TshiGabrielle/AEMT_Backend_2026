@@ -64,13 +64,13 @@ public class FoldersController {
     public RenameFolderOutput rename(
             @PathVariable long id,
             @RequestParam long userId,
-            @RequestBody RenameFolderInput body
+            @RequestBody RenameFolderRequest body
     ) {
-        // on reconstruit un input
-        RenameFolderInput input = new RenameFolderInput(id, userId, body.name());
+        RenameFolderInput input =
+                new RenameFolderInput(id, userId, body.name());
+
         return renameFolderHandler.handle(input);
     }
-
     // DELETE /api/folders/{id}
     // supprime un dossier (+ sous-dossiers et notes)
     @DeleteMapping("/{id}")
