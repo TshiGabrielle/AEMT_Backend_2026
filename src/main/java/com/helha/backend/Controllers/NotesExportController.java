@@ -8,15 +8,13 @@ import com.helha.backend.Application.notes.exportZip.ExportZipNoteInput;
 import com.helha.backend.Application.notes.exportZip.ExportZipNoteOutput;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
 
 @RestController
 @RequestMapping("/api/notes")
+@CrossOrigin(origins = "http://localhost:5173")
 public class NotesExportController {
 
     private final ExportPdfNoteHandler exportPdfNoteHandler;
