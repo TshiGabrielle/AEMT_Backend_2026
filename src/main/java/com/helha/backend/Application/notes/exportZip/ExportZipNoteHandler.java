@@ -36,15 +36,6 @@ public class ExportZipNoteHandler {
             zip.write(note.getContent_markdown().getBytes());
             zip.closeEntry();
 
-            // générer le html à partir du markdown
-            Parser parser = Parser.builder().build();
-            HtmlRenderer renderer = HtmlRenderer.builder().build();
-            String html = renderer.render(parser.parse(note.getContent_markdown()));
-
-            // ajouter le html dans l'archive
-            zip.putNextEntry(new ZipEntry("note.html"));
-            zip.write(html.getBytes()); zip.closeEntry();
-
             // finaliser le zip
             zip.close();
 
