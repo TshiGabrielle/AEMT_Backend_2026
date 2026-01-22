@@ -22,10 +22,7 @@ public class CreateNoteHandler {
 
     public CreateNoteOutput handle(CreateNoteInput input) {
 
-        // On essaie de charger le dossier auquel appartient la note,
-        // mais seulement si ce dossier appartient bien à l'utilisateur.
-        // Si l'id du dossier n'est pas donné, ou si le dossier ne lui appartient pas,
-        // alors 'folder' restera null.
+        //Charger dossier auquel appartient note
         DbFolder folder = null;
         if (input.idFolder() != null) {
             folder = folderRepository
@@ -35,10 +32,10 @@ public class CreateNoteHandler {
 
         // On crée une nouvelle entité Note (objet qui sera enregistré en base)
         NoteRepository note = new NoteRepository();
-        note.setName(input.name());                    // titre de la note
-        note.setContent_markdown(input.content_markdown());  // contenu brut en markdown
-        note.setContent_html("");                      // le HTML sera généré plus tard
-        note.setFolder(folder);                        // on associe la note au dossier (ou null)
+        note.setName(input.name());
+        note.setContent_markdown(input.content_markdown());
+        note.setContent_html("");
+        note.setFolder(folder);
 
         // On associe aussi la note à l'utilisateur qui la crée
         note.setUserId(input.userId());
