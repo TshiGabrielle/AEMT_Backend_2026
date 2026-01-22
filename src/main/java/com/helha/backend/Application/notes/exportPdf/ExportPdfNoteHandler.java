@@ -27,11 +27,19 @@ public class ExportPdfNoteHandler {
 
         // récupérer le markdown
         String markdown = note.getContent_markdown();
+        if (markdown == null) {
+            markdown = "";
+        }
 
         // convertir le markdown en html (via flexmark)
         Parser parser =  Parser.builder().build();
         HtmlRenderer renderer = HtmlRenderer.builder().build();
         String html = renderer.render(parser.parse(markdown));
+        if (html == null || html.isBlank()) {
+            html = "<html><head><meta charset=\"UTF-8\" /></head><body></body></html>";
+        } else {
+            html = "<html><head><meta charset=\"UTF-8\" /></head><body>" + html + "</body></html>";
+        }
 
         try {
             // générer le pdf
