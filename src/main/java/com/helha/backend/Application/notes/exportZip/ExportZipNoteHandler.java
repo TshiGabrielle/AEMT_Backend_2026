@@ -2,10 +2,8 @@ package com.helha.backend.Application.notes.exportZip;
 
 import com.helha.backend.Infrastructure.note.INoteRepository;
 import com.helha.backend.Infrastructure.note.NoteRepository;
-import com.vladsch.flexmark.html.HtmlRenderer;
 import org.springframework.stereotype.Service;
 
-import com.vladsch.flexmark.parser.Parser;
 import java.io.ByteArrayOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
