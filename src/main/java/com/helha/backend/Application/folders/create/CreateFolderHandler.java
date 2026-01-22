@@ -28,7 +28,7 @@ public class CreateFolderHandler {
                     .orElse(null);
 
             if (parent == null) {
-                return new CreateFolderOutput(false, "Dossier parent introuvable.");
+                return new CreateFolderOutput(false, "Dossier parent introuvable.", null, null, input.parentId());
             }
 
             folder.setParent(parent);
@@ -39,7 +39,10 @@ public class CreateFolderHandler {
 
         return new CreateFolderOutput(
                 true,
-                "Dossier créé avec succès."
+                "Dossier créé avec succès.",
+                saved.getId(),
+                saved.getName(),
+                input.parentId()
         );
     }
 }

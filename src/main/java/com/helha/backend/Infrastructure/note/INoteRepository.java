@@ -14,6 +14,9 @@ public interface INoteRepository extends CrudRepository<NoteRepository, Long> {
     // Récupère toutes les notes d'un dossier donné
     List<NoteRepository> findByFolder_Id(Long folderId);
 
+    // Supprime toutes les notes d'un dossier donné
+    void deleteByFolder_Id(Long folderId);
+
     // récupère toutes les notes appartenant à un utilisateur
     // permet d'éviter qu'un user voie les notes des autres
     List<NoteRepository> findByUserId(long userId);
